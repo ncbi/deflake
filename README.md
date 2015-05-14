@@ -12,4 +12,5 @@ At the command-line, run `python deflake.py --help` for a list of options. Defau
 # Defaults to running the program in 6 simultanous processes 
 # up to 25 times until failure
 $ python deflake.py "my_flakey_program arg1 arg2"
+```
 
