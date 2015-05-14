@@ -17,5 +17,5 @@ setup(
     license = "Public Domain",
     keywords = "testing flakey",
     url = "http://packages.python.org/deflake",
-    long_description=read('README'),
+    long_description=read('README.md'),
 )
