@@ -1,0 +1,117 @@
+#!/usr/bin/env python
+
+"""
+Classes and script for debugging a flaky program.
+
+Type python deflake.py -h on the command-line to see usage.
+"""
+
+import argparse
+import inspect
+import subprocess
+
+
+class _Printer(object):
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+
+    def out(self, txt, color=None):
+        out = getattr(self, color) + txt + self.ENDC if color is not None else txt
+        print out
+
+
+class DeFlake(object):
+    _printer = _Printer()
+    _process_failed = False
+    _loops = 0
+    _processes_run = 0
+
+    def __init__(self, command, max_runs=25, pool_size=6):
+        """
+        :param command: The command to run
+        :type param: str
+        :param max_runs: The maximum runs to execute if command doesn't return non-zero exit status
+        :type max_runs: int
+        :param pool_size: The number of processes in each batch to multiprocess until max_runs is reached
+        """
+
+        self.command = command
+        self.max_runs = max_runs
+        self.pool_size = pool_size
+
+    def _get_processes(self):
+        ret = []
+        for i in range(self.pool_size):
+            p = subprocess.Popen(self.command, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+            ret.append(p)
+
+        self._processes_run += len(ret)
+        return ret
+
+    def _run_processes(self):
+        for i, p in enumerate(self._get_processes()):
+            #print self.loops * (i+1)
+            com = p.communicate()
+            result = p.returncode
+            if result == 0:
+
+                #printer.out("Run: %s" % i)
+                self._printer.out("PASS", "OKGREEN")
+            else:
+                #printer.out("Run: %s" % i)
+                self._printer.out("FAIL (run %s)" % str(self._loops * self.pool_size + i + 1), "FAIL")
+                self._printer.out("\n".join(com))
+                self._process_failed = True
+                break
+
+        self._loops = self._loops + 1
+        if not self._process_failed and self._processes_run <= self.max_runs:
+            self._run_processes()
+
+    def run(self):
+        self._run_processes()
+
+
+if __name__ == "__main__":
+
+    def get_default_args(func):
+        """
+        returns a dictionary of arg_name:default_values for the input function
+        """
+        args, varargs, keywords, defaults = inspect.getargspec(func)
+        return dict(zip(args[-len(defaults):], defaults))
+
+    def parse_args():
+        default_args = get_default_args(DeFlake.__init__)
+        default_max_runs = default_args["max_runs"]
+        default_pool_size = default_args["pool_size"]
+
+        parser = argparse.ArgumentParser(
+            description="Debug flaky programs by running them until they exit with a non-zero exit status. Eg:\n$ "
+                        'python deflake.py "myprogram.py"')
+
+        parser.add_argument("command", type=str, help="The command to de-flake")
+        parser.add_argument("--max-runs", "-m", type=int, default=default_max_runs , help="Maximum runs before exiting"
+                                                                                         ". Eg. setting "
+                                                                          "to " \
+                                                                        "" \
+                                                                       "30 will "
+                                                               "run the command 30 times or until a non-zero exiit "
+                                                               "status is returned. Default is %s" % default_max_runs)
+
+        parser.add_argument("--pool-size", "-p", type=int, default=default_pool_size, help="The pool size to multi-process. Eg. set "
+                                                                           "to " \
+                                                                         "8 to "
+                                                                "multiprocess batches of 8 processes at a time until "
+                                                                "max_runs is reached. Default is %s." % default_pool_size)
+        args = vars(parser.parse_args())
+        return args
+
+
+    args = parse_args()
+    f = DeFlake(args["command"], max_runs=args["max_runs"], pool_size=args["pool_size"])
+    f.run()
