@@ -19,6 +19,7 @@ $ python deflake.py "my_flakey_program arg1 arg2"
 In this case we try to deflake `ls`. This program
 is pretty stable, so we don't expect a non-zero exit status.
 We should see `PASS` 25 times (the default maximum runs) until deflake gives up.
+
 ```
 >>> from deflake import DeFlake
 >>> DeFlake
