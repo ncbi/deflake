@@ -54,15 +54,11 @@ class DeFlake(object):
 
     def _run_processes(self):
         for i, p in enumerate(self._get_processes()):
-            #print self.loops * (i+1)
             com = p.communicate()
             result = p.returncode
             if result == 0:
-
-                #printer.out("Run: %s" % i)
                 self._printer.out("PASS", "OKGREEN")
             else:
-                #printer.out("Run: %s" % i)
                 self._printer.out("FAIL (run %s)" % str(self._loops * self.pool_size + i + 1), "FAIL")
                 self._printer.out("\n".join(com))
                 self._process_failed = True
