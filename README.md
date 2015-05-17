@@ -4,7 +4,7 @@ Helps debug a non determinate test (or any flaky program) by running it until it
 exit code.
 
 At the command-line, run `python deflake.py --help` for a list of options. Default maximum runs is
-25. Default pool-size is 1. **Note**: Setting a pool-size to > 1 can make your deflaking faster,
+10. Default pool-size is 1. **Note**: Setting a pool-size to > 1 can make your deflaking faster,
 but it won't always work, depending on the program you are trying to deflake. If your program
 writes to a file etc. then multiple processes may try to write to that file simultanously and
 render your deflaking, well, flaky. 
