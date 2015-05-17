@@ -18,4 +18,5 @@ setup(
     keywords = "testing flakey",
     url = "http://packages.python.org/deflake",
     long_description=read('README.md'),
+    scripts = ["deflake.py"]
 )
