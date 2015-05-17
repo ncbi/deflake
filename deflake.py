@@ -30,7 +30,7 @@ class DeFlake(object):
     _loops = 0
     _processes_run = 0
 
-    def __init__(self, command, max_runs=25, pool_size=6):
+    def __init__(self, command, max_runs=10, pool_size=1):
         """
         :param command: The command to run
         :type param: str
@@ -42,6 +42,7 @@ class DeFlake(object):
         self.command = command
         self.max_runs = max_runs
         self.pool_size = pool_size
+        self._out = []
 
     def _get_processes(self):
         ret = []
@@ -58,18 +59,22 @@ class DeFlake(object):
             result = p.returncode
             if result == 0:
                 self._printer.out("PASS", "OKGREEN")
+                self._out.append("PASS")
             else:
                 self._printer.out("FAIL (run %s)" % str(self._loops * self.pool_size + i + 1), "FAIL")
+                self._out.append("FAIL")
                 self._printer.out("\n".join(com))
+                self._out.append("\n".join(com))
                 self._process_failed = True
                 break
 
         self._loops = self._loops + 1
         if not self._process_failed and self._processes_run < self.max_runs:
             self._run_processes()
+        return self._out
 
     def run(self):
-        self._run_processes()
+        return self._run_processes()
 
 
 if __name__ == "__main__":
@@ -96,7 +101,7 @@ if __name__ == "__main__":
                                                                           "to " \
                                                                         "" \
                                                                        "30 will "
-                                                               "run the command 30 times or until a non-zero exiit "
+                                                               "run the command 30 times or until a non-zero exit "
                                                                "status is returned. Default is %s" % default_max_runs)
 
         parser.add_argument("--pool-size", "-p", type=int, default=default_pool_size, help="The pool size to multi-process. Eg. set "
