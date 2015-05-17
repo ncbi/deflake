@@ -65,7 +65,7 @@ class DeFlake(object):
                 break
 
         self._loops = self._loops + 1
-        if not self._process_failed and self._processes_run <= self.max_runs:
+        if not self._process_failed and self._processes_run < self.max_runs:
             self._run_processes()
 
     def run(self):
