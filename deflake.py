@@ -42,15 +42,24 @@ class DeFlake(object):
         self.command = command
         self.max_runs = max_runs
         self.pool_size = pool_size
+        self._processes = []
         self._out = []
 
     def _get_processes(self):
         ret = []
-        for i in range(self.pool_size):
-            p = subprocess.Popen(self.command, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-            ret.append(p)
-
+        groups = str(self.max_runs/self.pool_size)
+        r = self.max_runs % self.pool_size
+        if len(self._processes) >= self.max_runs/self.pool_size:
+            for i in range(r):
+                p = subprocess.Popen(self.command, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+                ret.append(p)
+        else:
+            for i in range(self.pool_size):
+                p = subprocess.Popen(self.command, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+                ret.append(p)
         self._processes_run += len(ret)
+        # keep track
+        self._processes.append(ret)
         return ret
 
     def _run_processes(self):
