@@ -24,7 +24,7 @@ class _Printer(object):
         print out
 
 
-class DeFlake(object):
+class Deflake(object):
     _printer = _Printer()
     _process_failed = False
     _loops = 0
