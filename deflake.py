@@ -12,8 +12,6 @@ import subprocess
 
 
 class _Printer(object):
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
     OKGREEN = '\033[92m'
     WARNING = '\033[93m'
     FAIL = '\033[91m'
@@ -43,7 +41,19 @@ class Deflake(object):
         self.max_runs = max_runs
         self.pool_size = pool_size
         self._processes = []
+
+        # Collect output as data
+        # so we can return from run()
         self._out = []
+
+    def _out(self, str, process_passed=True):
+        """ Wrapper for _printer. Outputs
+        to stdout with proper color, and saves
+        output to data structure in order to return
+        data from run()"""
+        color = "OKGREEN" if process_passed else "FAIL"
+        self._printer(str, color)
+        self._out.append(str)
 
     def _get_processes(self):
         ret = []
@@ -58,7 +68,10 @@ class Deflake(object):
                 p = subprocess.Popen(self.command, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
                 ret.append(p)
         self._processes_run += len(ret)
-        # keep track
+
+        # Keep track of the process pools so far since
+        # this method is called by its parent method
+        # recursively.
         self._processes.append(ret)
         return ret
 
