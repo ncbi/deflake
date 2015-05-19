@@ -49,22 +49,7 @@ PASS
 PASS
 PASS
 PASS
-PASS
-PASS
-PASS
-PASS
-PASS
-PASS
-PASS
-PASS
-PASS
-PASS
-PASS
-PASS
-PASS
-PASS
-PASS
->>> print results
+>>> results
 ['PASS', 'PASS','PASS','PASS','PASS','PASS','PASS','PASS','PASS','PASS']
 >>>
 ```
