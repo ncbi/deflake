@@ -46,13 +46,13 @@ class Deflake(object):
         # so we can return from run()
         self._out = []
 
-    def _out(self, str, process_passed=True):
-        """ Wrapper for _printer. Outputs
+    def _output(self, str, process_passed=True):
+        """ Wrapper for _Printer.out(). Outputs
         to stdout with proper color, and saves
         output to data structure in order to return
         data from run()"""
         color = "OKGREEN" if process_passed else "FAIL"
-        self._printer(str, color)
+        self._printer.out(str, color)
         self._out.append(str)
 
     def _get_processes(self):
@@ -80,11 +80,10 @@ class Deflake(object):
             com = p.communicate()
             result = p.returncode
             if result == 0:
-                self._printer.out("PASS", "OKGREEN")
-                self._out.append("PASS")
+                self._output("PASS")
             else:
-                self._printer.out("FAIL (run %s)" % str(self._loops * self.pool_size + i + 1), "FAIL")
-                self._out.append("FAIL")
+                self._output("FAIL (run %s)" % str(self._loops * self.pool_size + i + 1), False)
+                #self._out.append("FAIL")
                 self._printer.out("\n".join(com))
                 self._out.append("\n".join(com))
                 self._process_failed = True

@@ -36,7 +36,7 @@ class DeflakeTestCase(unittest.TestCase):
         flake = Deflake(os.path.join(self.THIS_DIR, "flaky.sh"))
         results = flake.run()
         self.assertEqual(len(results), 7)
-        self.assertEqual(results[-1], "FAIL")
+        self.assertEqual(results[-1], "FAIL (run 7)")
 
     @classmethod
     def tearDownClass(cls):
