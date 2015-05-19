@@ -5,5 +5,3 @@ if [[ $times_ran -gt 5 ]]; then
 fi
 new_num=$((times_ran + 1))
 echo $new_num > .counter
-cat .counter
-

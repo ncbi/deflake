@@ -35,10 +35,11 @@ class DeflakeTestCase(unittest.TestCase):
         self.assertEqual(len(results), 7)
         self.assertEqual(results[-1], "FAIL")
 
-    def test_fail_mp(self):
-        flake = Deflake("./flaky.sh", pool_size=2)
-        results = flake.run()
-        self.assertTrue("FAIL" in results)
+    @classmethod
+    def tearDownClass(cls):
+        counter = open(".counter", "w")
+        counter.write("0")
+        counter.close()
 
 
 if __name__ == "__main__":
