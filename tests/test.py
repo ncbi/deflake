@@ -1,9 +1,12 @@
+import os
 import unittest
 
 from deflake import Deflake
 
 
 class DeflakeTestCase(unittest.TestCase):
+    THIS_DIR = os.path.dirname(os.path.realpath(__file__))
+
     def _results_are_same_and_pass(self, results):
         return all(results[0] == result and result == "PASS" for result in results)
 
@@ -30,14 +33,14 @@ class DeflakeTestCase(unittest.TestCase):
         self.assertTrue(self._results_are_same_and_pass(results))
 
     def test_fail(self):
-        flake = Deflake("./flaky.sh")
+        flake = Deflake(os.path.join(self.THIS_DIR, "flaky.sh"))
         results = flake.run()
         self.assertEqual(len(results), 7)
         self.assertEqual(results[-1], "FAIL")
 
     @classmethod
     def tearDownClass(cls):
-        counter = open(".counter", "w")
+        counter = open(os.path.join(cls.THIS_DIR, ".counter"), "w")
         counter.write("0")
         counter.close()
 
