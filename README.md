@@ -18,6 +18,13 @@ render your deflaking, well, flaky.
 ```
 # up to 25 times until failure
 $ python deflake.py "my_flaky_program arg1 arg2"
+PASS
+PASS
+PASS
+FAIL (run 4)
+$ echo $?
+1
+$
 ```
 
 ## Example as Python Class
