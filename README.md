@@ -28,9 +28,9 @@ $
 ```
 
 ## Example as Python Class
-In this case we try to deflake `ls`. `ls`
+In this case we use the Deflake class, trying to deflake `ls`. `ls`
 is pretty stable, so we don't expect a non-zero exit status.
-We should see `PASS` 25 times (the default maximum runs) until deflake gives up.
+We should see `PASS` ten times (the default maximum runs) until deflake gives up.
 When running as a class, the `run` method runs the processes, and returns a list
 with the output from calling `run`.
 
@@ -38,7 +38,7 @@ with the output from calling `run`.
 >>> from deflake import Deflake
 >>> d =Deflake("ls")
 <deflake.Deflake object at 0x7fd1b40d76d0>
->>> d.run()
+>>> results = d.run()
 PASS
 PASS
 PASS
@@ -64,6 +64,9 @@ PASS
 PASS
 PASS
 PASS
+>>> print results
+['PASS', 'PASS','PASS','PASS','PASS','PASS','PASS','PASS','PASS','PASS']
+>>>
 ```
 
 ## Developing
