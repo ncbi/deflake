@@ -36,20 +36,9 @@ with the output from calling `run`.
 
 ```
 >>> from deflake import Deflake
->>> d =Deflake("ls")
+>>> d =Deflake("ls", quiet=True)
 <deflake.Deflake object at 0x7fd1b40d76d0>
 >>> results = d.run()
-PASS
-PASS
-PASS
-PASS
-PASS
-PASS
-PASS
-PASS
-PASS
-PASS
->>> results
 ['PASS', 'PASS','PASS','PASS','PASS','PASS','PASS','PASS','PASS','PASS']
 >>>
 ```
