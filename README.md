@@ -9,7 +9,9 @@ but it won't always work, depending on the program you are trying to deflake. If
 writes to a file etc. then multiple processes may try to write to that file simultanously and
 render your deflaking, well, flaky. 
 
+
 ## Example Running as Script
+`deflake.py` will exit with `1` if *any* processes return with non-zero.
 
 ```
 # Defaults to running the program in 6 simultanous processes 
@@ -19,16 +21,14 @@ $ python deflake.py "my_flaky_program arg1 arg2"
 ```
 
 ## Example as Python Class
-In this case we try to deflake `ls`. This program
+In this case we try to deflake `ls`. `ls`
 is pretty stable, so we don't expect a non-zero exit status.
 We should see `PASS` 25 times (the default maximum runs) until deflake gives up.
+When running as a class, the `run` method runs the processes, and returns a list
+with the output from calling `run`.
 
 ```
 >>> from deflake import Deflake
->>> Deflake
-<class 'deflake.Deflake'>
->>> Deflake("ls")
-<deflake.Deflake object at 0x7fd1b40d7810>
 >>> d =Deflake("ls")
 <deflake.Deflake object at 0x7fd1b40d76d0>
 >>> d.run()
