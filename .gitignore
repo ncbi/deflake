@@ -1,3 +1,4 @@
 deflake.egg-info
-*.pyc
 env
+*.pyc
+.tox
