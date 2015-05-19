@@ -1,8 +1,8 @@
-# deflake
+# `deflake.py`
 
 Helps debug a non determinate test (or any flaky program) by running it until it exits with a non-zero
-exit code.
 
+`deflake` can be run on the command-line or imported as a module. See below for more details.
 At the command-line, run `python deflake.py --help` for a list of options. Default maximum runs is
 10. Default pool-size is 1. **Note**: Setting a pool-size to > 1 can make your deflaking faster,
 but it won't always work, depending on the program you are trying to deflake. If your program
