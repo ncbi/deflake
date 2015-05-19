@@ -29,6 +29,17 @@ class DeflakeTestCase(unittest.TestCase):
             "Program should have run 10 times, but ran %s" % len_results)
         self.assertTrue(self._results_are_same_and_pass(results))
 
+    def test_fail(self):
+        flake = Deflake("./flaky.sh")
+        results = flake.run()
+        self.assertEqual(len(results), 7)
+        self.assertEqual(results[-1], "FAIL")
+
+    def test_fail_mp(self):
+        flake = Deflake("./flaky.sh", pool_size=2)
+        results = flake.run()
+        self.assertTrue("FAIL" in results)
+
 
 if __name__ == "__main__":
     unittest.main()

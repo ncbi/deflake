@@ -83,7 +83,9 @@ class Deflake(object):
         return self._out
 
     def run(self):
-        return self._run_processes()
+        results = self._run_processes()
+        ret = results[:-1] if results[-1] == "\n" else results 
+        return ret 
 
 
 if __name__ == "__main__":
@@ -96,7 +98,7 @@ if __name__ == "__main__":
         return dict(zip(args[-len(defaults):], defaults))
 
     def parse_args():
-        default_args = get_default_args(DeFlake.__init__)
+        default_args = get_default_args(Deflake.__init__)
         default_max_runs = default_args["max_runs"]
         default_pool_size = default_args["pool_size"]
 
@@ -123,5 +125,5 @@ if __name__ == "__main__":
 
 
     args = parse_args()
-    f = DeFlake(args["command"], max_runs=args["max_runs"], pool_size=args["pool_size"])
+    f = Deflake(args["command"], max_runs=args["max_runs"], pool_size=args["pool_size"])
     f.run()
