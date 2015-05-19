@@ -9,9 +9,12 @@ Type python deflake.py -h on the command-line to see usage.
 import argparse
 import inspect
 import subprocess
+import sys
 
 
 class _Printer(object):
+    """ "Private" class for printing pass and error
+    messages to screen."""
     OKGREEN = '\033[92m'
     WARNING = '\033[93m'
     FAIL = '\033[91m'
@@ -126,7 +129,7 @@ if __name__ == "__main__":
 
         parser = argparse.ArgumentParser(
             description="Debug flaky programs by running them until they exit with a non-zero exit status. Eg:\n$ "
-                        'python deflake.py "myprogram.py"')
+                        'python deflake.py "myprogram.py"\nExits with 1 if any processes exit with non-zero exit code.')
 
         parser.add_argument("command", type=str, help="The command to de-flake")
         parser.add_argument("--max-runs", "-m", type=int, default=default_max_runs , help="Maximum runs before exiting"
@@ -142,10 +145,23 @@ if __name__ == "__main__":
                                                                          "8 to "
                                                                 "multiprocess batches of 8 processes at a time until "
                                                                 "max_runs is reached. Default is %s." % default_pool_size)
+        parser.add_argument("--quiet", "-q",  dest="quiet", 
+            action='store_true',
+            help="When quiet mode is enabled, no output is sent to screen"
+        )
+
         args = vars(parser.parse_args())
         return args
 
 
     args = parse_args()
-    f = Deflake(args["command"], max_runs=args["max_runs"], pool_size=args["pool_size"])
-    f.run()
+    f = Deflake(args["command"], 
+        max_runs=args["max_runs"], 
+        pool_size=args["pool_size"],
+        quiet=args["quiet"]
+    )
+    results = f.run()
+
+    # 1 exit status if any processes "failed"
+    a_fail = [r for r in results if "FAIL" in r]
+    sys.exit(1) if len(a_fail) > 0 else sys.exit(0)
