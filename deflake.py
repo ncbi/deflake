@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+from __future__ import print_function
 """
 Classes and script for debugging a flaky program.
 
@@ -12,6 +12,7 @@ import subprocess
 import sys
 
 
+
 class _Printer(object):
     """ "Private" class for printing pass and error
     messages to screen."""
@@ -22,7 +23,7 @@ class _Printer(object):
 
     def out(self, txt, color=None):
         out = getattr(self, color) + txt + self.ENDC if color is not None else txt
-        print out
+        print(out)
 
 
 class Deflake(object):
