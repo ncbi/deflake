@@ -47,6 +47,7 @@ with the output from calling `run`.
 To work on this package:
 
 1. Clone the repo.
+1. pip install -e .
 1. Test: `python tests/test.py`.
 1. Fix/add stuff.
 1. Test.
