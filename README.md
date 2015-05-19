@@ -16,7 +16,6 @@ render your deflaking, well, flaky.
 `deflake.py` will exit with `1` if *any* processes return  non-zero.
 
 ```
-# Defaults to running the program in 6 simultanous processes 
 # up to 25 times until failure
 $ python deflake.py "my_flaky_program arg1 arg2"
 ```
