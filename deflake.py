@@ -83,6 +83,10 @@ class Deflake(object):
         return self._out
 
     def run(self):
+        """ Runs the deflaking. 
+        Method prints results to stdout and
+        returns a list of output.
+        """
         results = self._run_processes()
         ret = results[:-1] if results[-1] == "\n" else results 
         return ret 
