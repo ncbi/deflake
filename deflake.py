@@ -28,31 +28,34 @@ class Deflake(object):
     _loops = 0
     _processes_run = 0
 
-    def __init__(self, command, max_runs=10, pool_size=1):
+    def __init__(self, command, max_runs=10, pool_size=1, quiet=False):
         """
         :param command: The command to run
         :type param: str
         :param max_runs: The maximum runs to execute if command doesn't return non-zero exit status
         :type max_runs: int
         :param pool_size: The number of processes in each batch to multiprocess until max_runs is reached
+        :param quiet: Quiet mode. No printing to stdout
         """
 
         self.command = command
         self.max_runs = max_runs
         self.pool_size = pool_size
         self._processes = []
+        self._quiet = quiet
 
         # Collect output as data
         # so we can return from run()
         self._out = []
 
-    def _output(self, str, process_passed=True):
+    def _output(self, str, quiet, process_passed=True):
         """ Wrapper for _Printer.out(). Outputs
         to stdout with proper color, and saves
         output to data structure in order to return
         data from run()"""
-        color = "OKGREEN" if process_passed else "FAIL"
-        self._printer.out(str, color)
+        if not quiet:
+            color = "OKGREEN" if process_passed else "FAIL"
+            self._printer.out(str, color)
         self._out.append(str)
 
     def _get_processes(self):
@@ -80,12 +83,13 @@ class Deflake(object):
             com = p.communicate()
             result = p.returncode
             if result == 0:
-                self._output("PASS")
+                self._output("PASS", self._quiet)
             else:
                 self._output("FAIL (run %s)" % str(self._loops * self.pool_size + i + 1), 
+                    self._quiet,
                     process_passed=False)
                 # Print out stdout and stderr from process
-                self._output("\n".join(com), process_passed=False)
+                self._output("\n".join(com), self._quiet, process_passed=False)
                 self._process_failed = True
                 break
 

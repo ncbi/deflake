@@ -11,21 +11,21 @@ class DeflakeTestCase(unittest.TestCase):
         return all(results[0] == result and result == "PASS" for result in results)
 
     def test_default_no_fail(self):
-        flake = Deflake("ls")
+        flake = Deflake("ls", quiet=True)
         results = flake.run()
         self.assertEqual(len(results), 10,
             "Program should have run 10 times but ran %s" % len(results))
         self.assertTrue(self._results_are_same_and_pass(results))
 
     def test_max_runs_no_fail(self):
-        flake = Deflake("ls", max_runs=21)
+        flake = Deflake("ls", max_runs=21, quiet=True)
         results = flake.run()
         self.assertEqual(len(results), 21, 
             "Program should have run 21 times but ran %s" % len(results))
         self.assertTrue(self._results_are_same_and_pass(results))
 
     def test_mp(self):
-        flake = Deflake("ls", pool_size=4)
+        flake = Deflake("ls", pool_size=4, quiet=True)
         results = flake.run()
         len_results = len(results)
         self.assertEqual(len_results, 10, 
@@ -33,7 +33,7 @@ class DeflakeTestCase(unittest.TestCase):
         self.assertTrue(self._results_are_same_and_pass(results))
 
     def test_fail(self):
-        flake = Deflake(os.path.join(self.THIS_DIR, "flaky.sh"))
+        flake = Deflake(os.path.join(self.THIS_DIR, "flaky.sh"), quiet=True)
         results = flake.run()
         self.assertEqual(len(results), 7)
         self.assertEqual(results[-1], "FAIL (run 7)")
