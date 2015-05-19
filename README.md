@@ -1,6 +1,6 @@
 # `deflake.py`
 
-Helps debug a non determinate test (or any flaky program) by running it until it exits with a non-zero
+Helps debug a non determinate test (or any flaky program) by running it until it exits with a non-zero exit code.
 
 `deflake` can be run on the command-line or imported as a module. See below for more details.
 At the command-line, run `python deflake.py --help` for a list of options. Default maximum runs is
