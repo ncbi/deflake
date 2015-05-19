@@ -1,3 +1,9 @@
+#!/usr/bin/env bash
+
+# A "flaky" program designed to fail
+# every 6th time it's called. This
+# is for test.py. This won't work
+# for testing --pool-size multiprocessing.
 times_ran=$(cat .counter)
 if [[ $times_ran -gt 5 ]]; then
     echo 0 > .counter
