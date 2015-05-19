@@ -82,10 +82,10 @@ class Deflake(object):
             if result == 0:
                 self._output("PASS")
             else:
-                self._output("FAIL (run %s)" % str(self._loops * self.pool_size + i + 1), False)
-                #self._out.append("FAIL")
-                self._printer.out("\n".join(com))
-                self._out.append("\n".join(com))
+                self._output("FAIL (run %s)" % str(self._loops * self.pool_size + i + 1), 
+                    process_passed=False)
+                # Print out stdout and stderr from process
+                self._output("\n".join(com), process_passed=False)
                 self._process_failed = True
                 break
 
@@ -100,6 +100,8 @@ class Deflake(object):
         returns a list of output.
         """
         results = self._run_processes()
+
+        # Take out trailing newlines from result list if necessary.
         ret = results[:-1] if results[-1] == "\n" else results 
         return ret 
 
