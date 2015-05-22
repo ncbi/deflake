@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name = "deflake",
-    version = "0.0.3",
+    version = "0.0.4",
     author = "NCBI",
     author_email = "",
     description = ("A program to debug flakey programs"),
