@@ -51,3 +51,28 @@ To work on this package:
 1. Test: `python tests/test.py`.
 1. Fix/add stuff.
 1. Test.
+
+To submit to pypi, make sure your .pypirc is set up:
+
+```
+[distutils]
+index-servers =
+    python-local-repo
+    pypi
+
+[pypi]
+username:USERNAME
+password:PASS
+
+[python-local-repo]
+repository:https://artifactory.ncbi.nlm.nih.gov/artifactory/api/pypi/python-local-repo
+username:anonymous
+password:
+```
+
+Then:
+
+```
+python setup.py sdist upload -r pypi
+```
+
