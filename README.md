@@ -13,11 +13,11 @@ render your deflaking, well, flaky.
 
 
 ## Example Running as Script
-`deflake.py` will exit with `1` if *any* processes return  non-zero.
+`deflake` will exit with `1` if *any* processes return  non-zero.
 
 ```
 # up to 25 times until failure
-$ python deflake.py "my_flaky_program arg1 arg2"
+$ deflake "my_flaky_program arg1 arg2"
 PASS
 PASS
 PASS
@@ -78,3 +78,5 @@ Then:
 python setup.py sdist upload -r pypi
 ```
 
+## Known Issues
+- Extra processes kicked off in Python3x
