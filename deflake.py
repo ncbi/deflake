@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+from __future__ import print_function
 """
 Classes and script for debugging a flaky program.
 
@@ -22,7 +22,7 @@ class _Printer(object):
 
     def out(self, txt, color=None):
         out = getattr(self, color) + txt + self.ENDC if color is not None else txt
-        print out
+        print(out)
 
 
 class Deflake(object):
@@ -91,8 +91,6 @@ class Deflake(object):
                 self._output("FAIL (run %s)" % str(self._loops * self.pool_size + i + 1), 
                     self._quiet,
                     process_passed=False)
-                # Print out stdout and stderr from process
-                self._output("\n".join(com), self._quiet, process_passed=False)
                 self._process_failed = True
                 break
 
