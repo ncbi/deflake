@@ -78,3 +78,5 @@ Then:
 python setup.py sdist upload -r pypi
 ```
 
+## Known Issues
+- Extra processes kicked off in Python3x
