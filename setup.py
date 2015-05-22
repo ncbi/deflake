@@ -11,6 +11,6 @@ setup(
     license = "Public Domain",
     keywords = "testing flaky",
     url = "http://packages.python.org/deflake",
-    scripts = ["deflake.py"],
+    scripts = ["deflake/deflake.py"],
     packages = ["deflake"]
 )
