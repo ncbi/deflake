@@ -1,11 +1,11 @@
 from __future__ import print_function
+
 """
 Classes and script for debugging a flaky program.
 
 Type python deflake.py -h on the command-line to see usage.
 """
 
-import inspect
 import subprocess
 
 
