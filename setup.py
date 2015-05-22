@@ -9,7 +9,7 @@ setup(
     author_email = "",
     description = ("A program to debug flakey programs"),
     license = "Public Domain",
-    keywords = "testing flakey",
+    keywords = "testing flaky",
     url = "http://packages.python.org/deflake",
     scripts = ["deflake.py"]
 )
