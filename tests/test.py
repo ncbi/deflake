@@ -1,3 +1,4 @@
+import sys
 import os
 import unittest
 
@@ -24,6 +25,7 @@ class DeflakeTestCase(unittest.TestCase):
             "Program should have run 21 times but ran %s" % len(results))
         self.assertTrue(self._results_are_same_and_pass(results))
 
+    @unittest.skipIf("3.4" in sys.version, "poolsize generates too many processes for Python 3.4")
     def test_mp(self):
         flake = Deflake("ls", pool_size=4, quiet=True)
         results = flake.run()
