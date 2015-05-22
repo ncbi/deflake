@@ -70,6 +70,8 @@ username:anonymous
 password:
 ```
 
+Also, increment the version in `setup.py`
+
 Then:
 
 ```
