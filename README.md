@@ -12,6 +12,10 @@ writes to a file, for example, then multiple processes may try to write to that 
 render your deflaking, well, flaky. 
 
 
+## Install
+
+`$ pip install deflake`
+
 ## Example Running as Script
 `deflake` will exit with `1` if *any* processes return  non-zero.
 
