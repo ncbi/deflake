@@ -55,6 +55,10 @@ To work on this package:
 1. Test: `python tests/test.py`.
 1. Fix/add stuff.
 1. Test.
+1. Increment version in `setup.py`
+1. Submit pull request
+1. Tag `$ git tag -a x.x.x -m "Description"`
+1. `$ git push --tags`
 
 To submit to pypi, make sure your .pypirc is set up:
 
