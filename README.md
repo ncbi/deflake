@@ -71,11 +71,6 @@ index-servers =
 [pypi]
 username:USERNAME
 password:PASS
-
-[python-local-repo]
-repository:https://artifactory.ncbi.nlm.nih.gov/artifactory/api/pypi/python-local-repo
-username:anonymous
-password:
 ```
 
 Also, increment the version in `setup.py`
