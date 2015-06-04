@@ -85,9 +85,16 @@ class Deflake(object):
             if result == 0:
                 self._output("PASS", self._quiet)
             else:
-                self._output("FAIL (run %s)" % str(self._loops * self.pool_size + i + 1), 
+
+                self._output("FAIL (run %s)" % (str(self._loops * self.pool_size + i + 1)), 
                     self._quiet,
                     process_passed=False)
+
+                # Print error message if we have stderr
+                try:
+                    self._output(com[1], self._quiet, process_passed=False)
+                except TypeError, IndexError: 
+                    pass
                 self._process_failed = True
                 break
 
