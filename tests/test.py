@@ -41,11 +41,18 @@ class DeflakeTestCase(unittest.TestCase):
         self.assertEqual(results[-2], "FAIL (run 7)")
         self.assertEqual(results[-1], "forced error\n")
 
+    def test_counter_token(self):
+        flake = Deflake("touch file#count#.txt", max_runs=2, quiet=True)
+        results = flake.run()
+        self.assertTrue(os.path.exists('file1.txt') and os.path.exists('file2.txt'))
+
     @classmethod
     def tearDownClass(cls):
         counter = open(os.path.join(cls.THIS_DIR, ".counter"), "w")
         counter.write("0")
         counter.close()
+        os.remove('file1.txt')
+        os.remove('file2.txt')
 
 
 if __name__ == "__main__":

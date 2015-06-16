@@ -28,19 +28,24 @@ class Deflake(object):
     _loops = 0
     _processes_run = 0
 
-    def __init__(self, command, max_runs=10, pool_size=1, quiet=False):
+    def __init__(self, command, max_runs=10, pool_size=1, counter_token='#count#', quiet=False):
         """
         :param command: The command to run
         :type param: str
         :param max_runs: The maximum runs to execute if command doesn't return non-zero exit status
         :type max_runs: int
         :param pool_size: The number of processes in each batch to multiprocess until max_runs is reached
+        :type pool_size: int
+        :param counter_token: A string token which will be replaced by the value of a counter which increments for
+        every process started
+        :type counter_token: string
         :param quiet: Quiet mode. No printing to stdout
         """
 
         self.command = command
         self.max_runs = max_runs
         self.pool_size = pool_size
+        self.counter_token = counter_token
         self._processes = []
         self._quiet = quiet
 
@@ -60,16 +65,12 @@ class Deflake(object):
 
     def _get_processes(self):
         ret = []
-        groups = str(self.max_runs/self.pool_size)
-        r = self.max_runs % self.pool_size
-        if len(self._processes) >= self.max_runs/self.pool_size:
-            for i in range(r):
-                p = subprocess.Popen(self.command, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-                ret.append(p)
-        else:
-            for i in range(self.pool_size):
-                p = subprocess.Popen(self.command, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-                ret.append(p)
+        last_batch = self.max_runs % self.pool_size
+        range_stop = last_batch if len(self._processes) >= self.max_runs/self.pool_size else self.pool_size
+        for i in range(range_stop):
+            cmd = self.command.replace(self.counter_token, str(self._processes_run + i + 1))
+            p = subprocess.Popen(cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+            ret.append(p)
         self._processes_run += len(ret)
 
         # Keep track of the process pools so far since
