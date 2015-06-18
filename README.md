@@ -59,10 +59,11 @@ with the iterator used when looping through the processes. For example:
 $ deflake --pool-size 4 'my_flaky_program --log-file log#count#.txt'
 ```
 
-Let's say the program fails on the second run. It would output:
+Let's say the program fails on the third run. It would output the following log files:
 
 - log1.txt
 - log2.txt
+- log3.txt
 
 ## Developing
 To work on this package:
