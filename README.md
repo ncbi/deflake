@@ -50,20 +50,22 @@ render your deflaking, well, flaky. See below for a possible solution.
 
 If the program you're deflaking writes to predetermined files (for example a log file), and you want
 to multiprocess using the `pool-size` option, deflake might report a failure due to multiple processes
-trying to write to the same file. In this case you can use the special `#count` replacement token to change the name of the log
-file each process writes to. If you need to change the default `#count` token to something else, use
+trying to write to the same file. In this case you can use the special `#count#` replacement token to change the name of the log
+file each process writes to. If you need to change the default `#count#` token to something else, use
 the `--counter-token` or `-c` option. Whatever replacement token you use, it will be replaced
 with the iterator used when looping through the processes. For example:
 
 ```
-$ deflake --pool-size 4 'my_flaky_program --log-file log#count#.txt'
+$ deflake --max-runs 5 --pool-size 4 'my_flaky_program --log-file log#count#.txt'
 ```
 
-Let's say the program fails on the third run. It would output the following log files:
+The previous run would generate::
 
 - log1.txt
 - log2.txt
 - log3.txt
+- log4.txt
+- log5.txt
 
 ## Developing
 To work on this package:
