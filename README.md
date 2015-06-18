@@ -15,8 +15,10 @@ If the program you're deflaking writes to predetermined files (for example a log
 to multiprocess using the `pool-size` option, deflake might report a failure due to multiple processes
 trying to write to the same file.
 
-In this case you can use the special `#count` replacement token. You can change the default with
-the `--counter-token` or `-c` option. The token will be replaced
+In this case you can use the special `#count` replacement token. You can change the default `#count` replacement token
+the `--counter-token` or `-c` option. 
+
+Whatever replacement token you use, it will be replaced
 with the iterator used when looping through the processes. For example:
 
 ```
