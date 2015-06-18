@@ -6,30 +6,6 @@ Helps debug a non determinate test (or any flaky program) by running it until it
 At the command-line, run `python deflake.py --help` for a list of options. Default maximum runs is
 10. Default pool-size is 1. 
 
-**Note**: Setting a pool-size to > 1 can make your deflaking faster,
-but it won't always work, depending on the program you are trying to deflake. If your program
-writes to a file, for example, then multiple processes may try to write to that file simultanously and
-render your deflaking, well, flaky. See below for a possible solution. 
-
-If the program you're deflaking writes to predetermined files (for example a log file), and you want
-to multiprocess using the `pool-size` option, deflake might report a failure due to multiple processes
-trying to write to the same file.
-
-In this case you can use the special `#count` replacement token. You can change the default `#count` replacement token
-the `--counter-token` or `-c` option. 
-
-Whatever replacement token you use, it will be replaced
-with the iterator used when looping through the processes. For example:
-
-```
-$ deflake --pool-size 4 'my_flaky_program --log-file log#count#.txt'
-```
-
-Let's say the program fails on the second run. It would output:
-
-- log1.txt
-- log2.txt
-
 ## Install
 
 `$ pip install deflake`
@@ -64,6 +40,32 @@ with the output from calling `run`.
 ['PASS', 'PASS','PASS','PASS','PASS','PASS','PASS','PASS','PASS','PASS']
 >>>
 ```
+
+## Multiprocessing
+Use the `pool-size` or `-p` option to run your program in concurrent pools of processes. The default is no multiprocessing
+or a pool size of `1`. Setting a pool-size to > 1 can make your deflaking faster,
+but it won't always work, depending on the program you are trying to deflake. If your program
+writes to a file, for example, then multiple processes may try to write to that file simultanously and
+render your deflaking, well, flaky. See below for a possible solution. 
+
+If the program you're deflaking writes to predetermined files (for example a log file), and you want
+to multiprocess using the `pool-size` option, deflake might report a failure due to multiple processes
+trying to write to the same file.
+
+In this case you can use the special `#count` replacement token. You can change the default `#count` replacement token
+the `--counter-token` or `-c` option. 
+
+Whatever replacement token you use, it will be replaced
+with the iterator used when looping through the processes. For example:
+
+```
+$ deflake --pool-size 4 'my_flaky_program --log-file log#count#.txt'
+```
+
+Let's say the program fails on the second run. It would output:
+
+- log1.txt
+- log2.txt
 
 ## Developing
 To work on this package:
