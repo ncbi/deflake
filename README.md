@@ -9,8 +9,24 @@ At the command-line, run `python deflake.py --help` for a list of options. Defau
 **Note**: Setting a pool-size to > 1 can make your deflaking faster,
 but it won't always work, depending on the program you are trying to deflake. If your program
 writes to a file, for example, then multiple processes may try to write to that file simultanously and
-render your deflaking, well, flaky. 
+render your deflaking, well, flaky. See below for a possible solution. 
 
+If the program you're deflaking writes to predetermined files (for example a log file), and you want
+to multiprocess using the `pool-size` option, deflake might report a failure due to multiple processes
+trying to write to the same file.
+
+In this case you can use the special `#count` replacement token. You can change the default with
+the `--counter-token` or `-c` option. The token will be replaced
+with the iterator used when looping through the processes. For example:
+
+```
+$ deflake --pool-size 4 'my_flaky_program --log-file log#count#.txt'
+```
+
+Let's say the program fails on the second run. It would output:
+
+- log1.txt
+- log2.txt
 
 ## Install
 
