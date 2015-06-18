@@ -28,7 +28,7 @@ def parse_args():
     parser.add_argument("--counter-token", "-c", default=default_counter_token,
                         help="A string token which will be replaced by the value of a counter which increments for"
                              " every execution of the program.  Useful for getting programs to write to different"
-                             " files if they produce an output file. Default is '%s'." % default_counter_token)
+                             " files if they produce an output file. Default is '%s'. For example: $ deflake -c #bar# 'myprogram --log log#bar#.txt'" % default_counter_token)
 
     parser.add_argument("--max-runs", "-m", type=int, default=default_max_runs,
                         help="Maximum runs before exiting. Eg. setting to 30 will run the command 30 times or until"
