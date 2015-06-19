@@ -62,9 +62,6 @@ def run_cmd(command, procnum, counter_token):
 
 class Deflake(object):
     _printer = _Printer()
-    _process_failed = False
-    _loops = 0
-    _processes_run = 0
 
     def __init__(self, command, max_runs=10, pool_size=1, counter_token='#count#', quiet=False):
         """
@@ -84,7 +81,6 @@ class Deflake(object):
         self.max_runs = max_runs
         self.pool_size = pool_size
         self.counter_token = counter_token
-        self._processes = []
         self._quiet = quiet
 
         self.pool = Pool(processes=self.pool_size, initializer=_init_worker)
@@ -104,6 +100,12 @@ class Deflake(object):
         self._out.append(outstr)
 
     def check_result(self, result):
+        """
+        Callback for worker processes, checks process result and outputs appropriate message
+        Terminates all workers if the process fails.
+        :param result: PASS or FAIL result string from worker process
+        :type result: str
+        """
         if result == 'PASS':
             self._output(result, self._quiet)
         else:

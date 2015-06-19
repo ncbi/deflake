@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name = "deflake",
-    version = "0.0.9",
+    version = "0.1.0",
     author = "NCBI",
     author_email = "",
     description = ("Helps debug a non determinate test (or any flaky program) by running it until it exits with a non-zero exit code. See https://github.com/ncbi/deflake for more details"),
