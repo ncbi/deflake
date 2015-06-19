@@ -24,7 +24,7 @@ class _Printer(object):
         print(out)
 
 
-def init_worker():
+def _init_worker():
     """
     Makes worker processes ignore ctrl+c so Deflake.run can catch it
     see http://stackoverflow.com/a/1408476/725604
@@ -87,7 +87,7 @@ class Deflake(object):
         self._processes = []
         self._quiet = quiet
 
-        self.pool = Pool(processes=self.pool_size, initializer=init_worker)
+        self.pool = Pool(processes=self.pool_size, initializer=_init_worker)
 
         # Collect output as data
         # so we can return from run()
