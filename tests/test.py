@@ -37,9 +37,8 @@ class DeflakeTestCase(unittest.TestCase):
     def test_fail(self):
         flake = Deflake(os.path.join(self.THIS_DIR, "flaky.sh"), quiet=True)
         results = flake.run()
-        self.assertEqual(len(results), 8)
-        self.assertEqual(results[-2], "FAIL (run 7)")
-        self.assertEqual(results[-1], "forced error\n")
+        self.assertEqual(len(results), 7)
+        self.assertEqual(results[-1], "FAIL (run 7)\nforced error\n")
 
     def test_counter_token(self):
         flake = Deflake("touch file#count#.txt", max_runs=2, quiet=True)
