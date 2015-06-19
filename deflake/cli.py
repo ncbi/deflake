@@ -49,13 +49,14 @@ def parse_args():
 
 def main():
     args = parse_args()
-    print args
     f = Deflake(args["command"], 
         max_runs=args["max_runs"], 
         pool_size=args["pool_size"],
         counter_token=args["counter_token"],
-        quiet=args["quiet"]
+        quiet=args["quiet"],
+        contin=args["continue"]
     )
+    print f.__dict__
     results = f.run()
 
     # 1 exit status if any processes "failed"
