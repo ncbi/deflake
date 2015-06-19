@@ -113,7 +113,7 @@ class Deflake(object):
         :param result: PASS or FAIL result string from worker process
         :type result: str
         """
-        if result == 'PASS':
+        if result == 'PASS' or self._continue:
             self._output(result, self._quiet)
         else:
             self._output(result, self._quiet, process_passed=False)
