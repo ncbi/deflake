@@ -56,7 +56,6 @@ def main():
         quiet=args["quiet"],
         contin=args["continue"]
     )
-    print f.__dict__
     results = f.run()
 
     # 1 exit status if any processes "failed"

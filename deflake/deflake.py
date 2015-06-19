@@ -113,11 +113,13 @@ class Deflake(object):
         :param result: PASS or FAIL result string from worker process
         :type result: str
         """
-        if result == 'PASS' or self._continue:
+        if result == 'PASS':
             self._output(result, self._quiet)
         else:
-            self._output(result, self._quiet, process_passed=False)
-            self.pool.terminate()
+            if self._continue:
+                self._output(result, self._quiet, process_passed=False)
+            else:
+                self.pool.terminate()
 
     def run(self):
         """ Runs the deflaking.
