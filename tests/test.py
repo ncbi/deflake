@@ -40,6 +40,11 @@ class DeflakeTestCase(unittest.TestCase):
         self.assertEqual(len(results), 7)
         self.assertEqual(results[-1], "FAIL (run 7)\nforced error\n")
 
+    def test_continue(self):
+        flake = Deflake(os.path.join(self.THIS_DIR, "flaky.sh"), quiet=True, contin=True)
+        results = flake.run()
+        self.assertEqual(len(results), 10)
+
     def test_counter_token(self):
         flake = Deflake("touch file#count#.txt", max_runs=2, quiet=True)
         results = flake.run()
