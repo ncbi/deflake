@@ -116,9 +116,8 @@ class Deflake(object):
         if result == 'PASS':
             self._output(result, self._quiet)
         else:
-            if self._continue:
-                self._output(result, self._quiet, process_passed=False)
-            else:
+            self._output(result, self._quiet, process_passed=False)
+            if not self._continue:
                 self.pool.terminate()
 
     def run(self):
