@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # A "flaky" program designed to fail
-# every 6th time it's called. This
+# every 7th time it's called. This
 # is for test.py. This won't work
 # for testing --pool-size multiprocessing.
 times_ran=$(cat .counter)

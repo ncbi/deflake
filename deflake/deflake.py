@@ -35,6 +35,7 @@ def init_worker():
 def run_cmd(command, procnum, counter_token):
     """
     Worker process which executes the command to be deflaked
+    Must be defined outside class to avoid pickling mess (seriously)
     :param command: command to be deflaked
     :type command: str
     :param procnum: process number to be used as a replacement for the counter_token
@@ -110,7 +111,7 @@ class Deflake(object):
             self.pool.terminate()
 
     def run(self):
-        """ Runs the deflaking. 
+        """ Runs the deflaking.
         Method prints results to stdout and
         returns a list of output.
         """
