@@ -86,12 +86,7 @@ class DeflakeTestCase(unittest.TestCase):
 
     def tearDown(self):
         try:
-            os.remove('file1.txt')
-            os.remove('file2.txt')
+            os.remove(os.path.join(self.THIS_DIR, 'file1.txt'))
+            os.remove(os.path.join(self.THIS_DIR, 'file2.txt'))
         except OSError:
             pass
-
-"""
-if __name__ == "__main__":
-    unittest.main()
-"""
