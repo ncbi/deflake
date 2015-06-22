@@ -34,6 +34,9 @@ class DeflakeTestCase(unittest.TestCase):
             "Program should have run 10 times, but ran %s" % len_results)
         self.assertTrue(self._results_are_same_and_pass(results))
 
+    def test_passing_exist_code(self):
+        pass
+
     def test_fail(self):
         flake = Deflake(os.path.join(self.THIS_DIR, "flaky.sh"), quiet=True)
         results = flake.run()
