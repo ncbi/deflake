@@ -55,9 +55,14 @@ class DeflakeTestCase(unittest.TestCase):
         counter = open(os.path.join(cls.THIS_DIR, ".counter"), "w")
         counter.write("0")
         counter.close()
-        os.remove('file1.txt')
-        os.remove('file2.txt')
+        try:
+            os.remove('file1.txt')
+            os.remove('file2.txt')
+        except OSError:
+            pass
 
 
+"""
 if __name__ == "__main__":
     unittest.main()
+"""
