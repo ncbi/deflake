@@ -25,6 +25,8 @@ def parse_args():
 
     parser.add_argument("command", type=str, help="The command to de-flake")
 
+    parser.add_argument("--continue", "-o", action="store_true",
+                        help="When set, deflake will continue even if a process returns a non-zero exit status")
     parser.add_argument("--counter-token", "-c", default=default_counter_token,
                         help="A string token which will be replaced by the value of a counter which increments for"
                              " every execution of the program.  Useful for getting programs to write to different"
@@ -51,7 +53,8 @@ def main():
         max_runs=args["max_runs"], 
         pool_size=args["pool_size"],
         counter_token=args["counter_token"],
-        quiet=args["quiet"]
+        quiet=args["quiet"],
+        contin=args["continue"]
     )
     results = f.run()
 

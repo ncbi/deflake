@@ -1,5 +1,6 @@
-import sys
 import os
+import subprocess
+import sys
 import unittest
 
 from deflake import Deflake
@@ -34,25 +35,58 @@ class DeflakeTestCase(unittest.TestCase):
             "Program should have run 10 times, but ran %s" % len_results)
         self.assertTrue(self._results_are_same_and_pass(results))
 
+    def test_passing_exist_code(self):
+        code = subprocess.check_call("deflake -q 'exit 0'", shell=True)
+        self.assertEquals(code, 0)
+
+    def test_failing_exit_code(self):
+        code = 0
+        try:
+            code = subprocess.check_call("deflake -q 'exit 1'", shell=True)
+            self.fail("Deflaking a failing process should raise a subprocess.CalledProcessError")
+        except subprocess.CalledProcessError:
+            pass
+
+    def test_continue_exit_code(self):
+        try:
+            subprocess.check_call(
+                "deflake -q --continue %s" % os.path.join(self.THIS_DIR, "flaky.sh"),
+                shell=True
+            )
+            self.fail(
+                "Even when continuing through a failure, deflaking a failing process should raise a subprocess.CalledProcessError"
+            )
+        except subprocess.CalledProcessError:
+            pass
+
     def test_fail(self):
         flake = Deflake(os.path.join(self.THIS_DIR, "flaky.sh"), quiet=True)
         results = flake.run()
         self.assertEqual(len(results), 7)
         self.assertEqual(results[-1], "FAIL (run 7)\nforced error\n")
 
+    def test_continue(self):
+        flake = Deflake(os.path.join(self.THIS_DIR, "flaky.sh"), quiet=True, contin=True)
+        results = flake.run()
+        self.assertEqual(len(results), 10)
+        self.assertTrue("FAIL (run 7" in results[6])
+
     def test_counter_token(self):
         flake = Deflake("touch file#count#.txt", max_runs=2, quiet=True)
         results = flake.run()
         self.assertTrue(os.path.exists('file1.txt') and os.path.exists('file2.txt'))
 
-    @classmethod
-    def tearDownClass(cls):
-        counter = open(os.path.join(cls.THIS_DIR, ".counter"), "w")
+    def setUp(self):
+        self._reset_counter()
+
+    def _reset_counter(self):
+        counter = open(os.path.join(self.THIS_DIR, ".counter"), "w")
         counter.write("0")
         counter.close()
-        os.remove('file1.txt')
-        os.remove('file2.txt')
 
-
-if __name__ == "__main__":
-    unittest.main()
+    def tearDown(self):
+        try:
+            os.remove(os.path.join(self.THIS_DIR, 'file1.txt'))
+            os.remove(os.path.join(self.THIS_DIR, 'file2.txt'))
+        except OSError:
+            pass

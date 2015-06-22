@@ -63,7 +63,13 @@ def run_cmd(command, procnum, counter_token):
 class Deflake(object):
     _printer = _Printer()
 
-    def __init__(self, command, max_runs=10, pool_size=1, counter_token='#count#', quiet=False):
+    def __init__(self, 
+                 command, 
+                 max_runs=10, 
+                 pool_size=1, 
+                 counter_token='#count#', 
+                 quiet=False,
+                 contin=False):
         """
         :param command: The command to run
         :type command: str
@@ -82,6 +88,7 @@ class Deflake(object):
         self.pool_size = pool_size
         self.counter_token = counter_token
         self._quiet = quiet
+        self._continue = contin
 
         self.pool = Pool(processes=self.pool_size, initializer=_init_worker)
 
@@ -110,7 +117,8 @@ class Deflake(object):
             self._output(result, self._quiet)
         else:
             self._output(result, self._quiet, process_passed=False)
-            self.pool.terminate()
+            if not self._continue:
+                self.pool.terminate()
 
     def run(self):
         """ Runs the deflaking.
