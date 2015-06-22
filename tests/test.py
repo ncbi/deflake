@@ -1,5 +1,6 @@
-import sys
 import os
+import subprocess
+import sys
 import unittest
 
 from deflake import Deflake
@@ -35,7 +36,16 @@ class DeflakeTestCase(unittest.TestCase):
         self.assertTrue(self._results_are_same_and_pass(results))
 
     def test_passing_exist_code(self):
-        pass
+        code = subprocess.check_call("deflake -q 'exit 0'", shell=True)
+        self.assertEquals(code, 0)
+
+    def test_failing_exit_code(self):
+        code = 0
+        try:
+            code = subprocess.check_call("deflake -q 'exit 1'", shell=True)
+            self.fail("Deflaking a failing process should raise a subprocess.CalledProcessError")
+        except subprocess.CalledProcessError:
+            pass
 
     def test_fail(self):
         flake = Deflake(os.path.join(self.THIS_DIR, "flaky.sh"), quiet=True)
