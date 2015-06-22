@@ -47,6 +47,18 @@ class DeflakeTestCase(unittest.TestCase):
         except subprocess.CalledProcessError:
             pass
 
+    def test_continue_exit_code(self):
+        try:
+            subprocess.check_call(
+                "deflake -q --continue %s" % os.path.join(self.THIS_DIR, "flaky.sh"),
+                shell=True
+            )
+            self.fail(
+                "Even when continuing through a failure, deflaking a failing process should raise a subprocess.CalledProcessError"
+            )
+        except subprocess.CalledProcessError:
+            pass
+
     def test_fail(self):
         flake = Deflake(os.path.join(self.THIS_DIR, "flaky.sh"), quiet=True)
         results = flake.run()
