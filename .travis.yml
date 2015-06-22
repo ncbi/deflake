@@ -2,7 +2,7 @@ language: python
 python:
   - "2.7"
 # command to install dependencies
-install: "pip install -r test_requirements.txt"
+install: "pip install -r test_requirements.txt;pip install ."
 # command to run tests
 script: cd tests;nosetests test.py 
 
