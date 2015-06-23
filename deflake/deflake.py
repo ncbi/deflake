@@ -130,7 +130,7 @@ class Deflake(object):
                 try:
                     self.pool.apply_async(run_cmd,
                                           args=(self.command, i + 1, self.counter_token),
-                                          callback=self.check_result).get(9999999)
+                                          callback=self.check_result)
                 except AssertionError:
                     break
             self.pool.close()
