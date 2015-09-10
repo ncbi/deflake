@@ -1,1 +1,1 @@
-from deflake import Deflake
+from .deflake import Deflake
