@@ -54,7 +54,7 @@ def run_cmd(command, procnum, counter_token):
         res = "FAIL (run %s)\n" % procnum
         # Print error message if we have stderr
         try:
-            res += com[1]
+            res += com[1].decode("utf-8")
         except (TypeError, IndexError):
             pass
         return res
